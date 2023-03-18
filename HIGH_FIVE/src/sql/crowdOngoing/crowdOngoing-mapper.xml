@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<entry key="selectGoodIdeaUserNo">
+	SELECT
+	      CROWD_GOODIDEA
+	 FROM
+	     CROWD_ONGOING
+	 WHERE
+	     CROWD_NO = ?
+	  AND
+	     USER_NO = ?
+		                          
+	       
+	</entry>
+	
+	<entry key="selectMakeItUserNo">
+	SELECT
+	      CROWD_MAKEIT
+	  FROM
+	       CROWD_ONGOING
+	  WHERE
+	       CROWD_NO = ?
+	  AND
+	       USER_NO = ?              
+	
+	</entry>
+	
+	<entry key="insertGoodIdea">
+	INSERT
+	  INTO
+	      CROWD_ONGOING(
+	      				CROWD_NO,
+	      				CROWD_GOODIDEA,
+	      				CROWD_MAKEIT,
+	      				STATUS,
+	      				USER_NO
+	      				)
+	  VALUES
+	        (?,
+	         1,
+	         0,
+	         'Y',
+	         ?
+	        )    				
+	     
+	</entry>
+	
+	<entry key="downGoodIdea">
+	UPDATE
+		  CROWD_ONGOING
+	  SET
+	      CROWD_GOODIDEA = 0
+	 WHERE
+	      CROWD_NO = ?
+	   AND
+	      USER_NO = ?   
+	          	  
+	</entry>
+	
+	<entry key="upGoodIdea">
+	UPDATE
+		  CROWD_ONGOING
+	  SET
+	      CROWD_GOODIDEA = 1
+	 WHERE
+	      CROWD_NO = ?
+	  AND
+	      USER_NO = ?         	  
+	
+	</entry>
+	
+	<entry key="goodIdeaCount">
+	SELECT
+	      COUNT(*)
+	 FROM 
+	      CROWD_ONGOING
+	 WHERE
+	     CROWD_NO = ?
+	  AND
+	     CROWD_GOODIDEA = 1    
+	              
+	</entry>
+	
+	<entry key="insertMakeIt">
+	INSERT
+	  INTO
+	      CROWD_ONGOING(
+	      				CROWD_NO,
+	      				CROWD_GOODIDEA,
+	      				CROWD_MAKEIT,
+	      				STATUS,
+	      				USER_NO
+	      				)
+	  VALUES
+	        (
+	         ?,
+	         0,
+	         1,
+	         'Y',
+	         ?
+	        )
+	
+	</entry>
+	
+	<entry key="downMakeIt">
+	UPDATE
+		  CROWD_ONGOING
+	  SET
+	      CROWD_MAKEIT = 0
+	 WHERE
+	      CROWD_NO = ?
+	   AND
+	      USER_NO = ?   
+	
+	
+	</entry>
+	
+	<entry key="upMakeIt">
+	UPDATE
+		  CROWD_ONGOING
+	  SET
+	      CROWD_MAKEIT = 1
+	 WHERE
+	      CROWD_NO = ?
+	  AND
+	      USER_NO = ?
+	
+	</entry>
+	
+	<entry key="makeItCount">
+	SELECT
+	      COUNT(*)
+	 FROM 
+	      CROWD_ONGOING
+	 WHERE
+	     CROWD_NO = ?
+	  AND
+	     CROWD_MAKEIT = 1
+	</entry>
+</properties>
