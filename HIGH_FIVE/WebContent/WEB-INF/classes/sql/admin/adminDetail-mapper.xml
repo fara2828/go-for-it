@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+
+	<entry key="firmUpDeleteMember">
+		DELETE
+		      MEMBER
+		 WHERE
+		      USER_NO = ?
+		   AND
+		      STATUS = 'N'
+	</entry>
+	
+	<entry key="restoreChallenges">
+		UPDATE
+		      CHALLENGE
+		   SET
+		      STATUS = 'Y'
+		 WHERE
+		      STATUS = 'N'
+		   AND
+		      CHALL_NO = ?			 
+	</entry>
+	
+	<entry key="deleteCrowdChallenges">
+		UPDATE
+		      CROWD_CHALLENGE
+		   SET
+		      STATUS = 'N'
+		 WHERE
+		      CROWD_NO = ?
+		   AND
+		      STATUS = 'Y'		
+	</entry>
+	
+	
+	<entry key="answerInsertContact">
+		INSERT 
+		  INTO 
+		      CONTACT
+		      (
+		      CONTACT_NO,
+		      ANSWER_YN,
+		      A_CONTENT,
+		      USER_NO,
+		      STATUS,
+		      CONTACTDATE
+		      )
+		VALUES
+			  (
+			  CONTACT_NO_SEQ.NEXTVAL,
+			  'Y',
+			  ?,
+			  ?,
+			  'Y',
+			  SYSDATE
+			  )
+	</entry>
+	
+	<entry key="firmUpDeleteNotice">
+		UPDATE
+			  NOTICE
+		   SET
+		   	  STATUS='N'
+		 WHERE
+		 	  NO=?
+		 	  
+	</entry>
+	
+	<entry key="firmUpDeleteFaq"> 
+		UPDATE
+			  FAQ
+		   SET
+		   	  STATUS='N'
+		 WHERE
+		 	  FAQ_NO=?
+	</entry>	
+	
+	<entry key="answerUpdateContact">
+		UPDATE
+			  CONTACT
+	       SET
+	          ANSWER_YN = 'Y',
+	          A_CONTENT = ?
+	     WHERE
+	          CONTACT_NO = ?
+	       AND
+	          STATUS = 'Y'
+	</entry>
+	
+</properties>

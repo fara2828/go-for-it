@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<entry key="selectChallengeList">
+		SELECT 
+			CHALL_NO,
+			CHALL_NAME,
+			TO_CHAR(CHALL_START, 'YYYY.MM.DD') CHALL_START,
+			TO_CHAR(CHALL_END, 'YYYY.MM.DD') CHALL_END,
+			CHALL_FREQUENCY,
+			(CHALL_END - CHALL_START) as CHALL_DAYCOUNT,
+			CHALL_THUMBNAIL,
+			CHALL_FREQUENCY,
+			CHALL_COUNT,
+			CHALL_PARTICIPANT_NOW 
+		FROM 
+			CHALLENGE
+		WHERE
+			CHALL_PUBLIC = 'Y'
+			AND STATUS = 'Y'
+		ORDER BY
+			? DESC
+	</entry>
+	
+	<entry key="selectChallengeDetail">
+		SELECT 
+			CHALL_NO,
+			CHALL_NAME,
+			CHALL_CATEGORY,
+			TO_CHAR(CHALL_START, 'YYYY.MM.DD') CHALL_START,
+			TO_CHAR(CHALL_END, 'YYYY.MM.DD') CHALL_END,
+			CHALL_FREQUENCY,
+			(CHALL_END - CHALL_START) as CHALL_DAYCOUNT,
+			NICKNAME,
+			PROFILE,
+			USER_LEVEL,
+			CHALL_INTRODUCTION,
+			CHALL_HOWTO,
+			CHALL_PHOTO_EXP,
+			CHALL_PUBLIC,
+			FILE_PATH,
+			CHALL_THUMBNAIL,
+			CHALL_PUBLIC,
+			CHALL_PWD,
+			USER_NO
+		FROM 
+			CHALLENGE c
+		JOIN 
+			MEMBER USING (USER_NO)
+		LEFT JOIN 
+			ATTACHMENT a USING (CHALL_NO)
+		WHERE 
+			CHALL_NO = ?
+		AND c.STATUS = 'Y'
+	</entry>
+	
+	<entry key="increaseCount">
+		UPDATE 
+			CHALLENGE  
+		SET
+			CHALL_COUNT = CHALL_COUNT + 1
+		WHERE
+			CHALL_NO = ?
+			AND STATUS = 'Y'
+	</entry>
+	
+	<entry key="enjoyCheck">
+		SELECT 
+			COUNT(*) AS COUNT
+		FROM 
+			JOIN_CHALL jc
+		JOIN 
+			MEMBER m ON jc.USER_NO = m.USER_NO 
+		JOIN 
+			CHALLENGE c ON jc.CHALL_NO = c.CHALL_NO 
+		WHERE 
+			m.STATUS = 'Y'
+			AND c.STATUS = 'Y'
+			AND jc.USER_NO = ?
+			AND jc.CHALL_NO = ?
+	</entry>
+	
+	<entry key="enjoyChallenge">
+		INSERT INTO 
+			JOIN_CHALL 
+				(
+				USER_NO,
+				CHALL_NO
+				)
+			VALUES
+				(
+				?,
+				?
+				)
+	</entry>
+	
+	<entry key="checkChallPwd">
+		 SELECT 
+			COUNT(*) AS COUNT
+		FROM
+			CHALLENGE
+		WHERE
+			CHALL_NO = ?
+			AND CHALL_PWD = ?
+	</entry>
+
+	<entry key="selectEnjoyCount">
+		SELECT 
+			COUNT(*) as COUNT
+		FROM
+			CHALLENGE c
+		JOIN JOIN_CHALL jc ON
+			(c.CHALL_NO = jc.CHALL_NO)
+		WHERE
+			jc.USER_NO = ?
+			AND c.STATUS = 'Y'
+			AND SYSDATE BETWEEN CHALL_START AND CHALL_END
+	</entry>
+	
+	<entry key="selectEndCount">
+		SELECT 
+			COUNT(*) as COUNT
+		FROM
+			CHALLENGE c
+		JOIN JOIN_CHALL jc ON
+			(c.CHALL_NO = jc.CHALL_NO)
+		WHERE
+			c.USER_NO = ?
+			AND c.STATUS = 'Y'
+			AND SYSDATE > CHALL_END
+	</entry>
+	
+	<entry key="selectMadeCount">
+		SELECT
+			COUNT(*) as COUNT
+		FROM
+			CHALLENGE c
+		JOIN MEMBER m ON
+			(c.USER_NO = m.USER_NO)
+		WHERE
+			c.USER_NO = ?
+			AND c.STATUS = 'Y'
+		ORDER BY
+			CHALL_POSTDATE DESC
+	</entry>
+	
+	<entry key="insertChallenge">
+		INSERT 
+			INTO
+			CHALLENGE 
+				(
+					CHALL_NO,
+					USER_NO,
+					CHALL_NAME,
+					CHALL_CATEGORY,
+					CHALL_POSTDATE,
+					CHALL_START,
+					CHALL_END,
+					CHALL_FREQUENCY,
+					CHALL_PARTICIPANT,
+					CHALL_PARTICIPANT_NOW,
+					CHALL_HOWTO,
+					CHALL_INTRODUCTION,
+					CHALL_THUMBNAIL,
+					CHALL_PUBLIC,
+					STATUS,
+					CHALL_PWD,
+					CHALL_COUNT,
+					CHALL_PHOTO_EXP
+				)
+			VALUES
+				(
+					CHALL_NO_SEQ.NEXTVAL,
+					?,
+					?,
+					?,
+					SYSDATE,
+					?,
+					?,
+					?,
+					?,
+					1,
+					?,
+					?,
+					?,
+					?,
+					'Y',
+					?,
+					0,
+					?
+				)
+	</entry>
+	
+	<entry key="insertChallengeAttachment">
+		INSERT
+			INTO
+			ATTACHMENT
+				(
+					FILE_NO,
+					FILE_PATH,
+					CHALL_NO,
+					STATUS,
+					ORIGIN_NAME,
+					CHANGE_NAME,
+					UPLOAD 
+				)
+			VALUES
+				(
+					FILE_NO_SEQ.NEXTVAL,
+					?,
+					CHALL_NO_SEQ.CURRVAL,
+					'Y',
+					?,
+					?,
+					SYSDATE
+				)
+	</entry>
+	
+	<entry key="insertEnjoyChallenge">
+		INSERT INTO 
+			JOIN_CHALL 
+				(
+				USER_NO,
+				CHALL_NO
+				)
+			VALUES
+				(
+				?,
+				CHALL_NO_SEQ.CURRVAL
+				)
+	</entry>
+	
+	<entry key="selectChallengeAttechment">
+		SELECT
+			FILE_PATH
+		FROM
+			ATTACHMENT
+		WHERE
+			CHALL_NO = ?
+	</entry>
+	
+	<entry key="participateChallengeNow">
+		SELECT
+			CHALL_PARTICIPANT,
+			CHALL_PARTICIPANT_NOW
+		FROM
+			CHALLENGE
+		WHERE
+			CHALL_NO = ?
+	</entry>
+	
+	<entry key="increaseChallParticipantNow">
+		UPDATE 
+			CHALLENGE  
+		SET
+			CHALL_PARTICIPANT_NOW = CHALL_PARTICIPANT_NOW + 1
+		WHERE
+			CHALL_NO = ?
+			AND STATUS = 'Y'
+	</entry>
+	
+	<entry key="deleteChallenge">
+		UPDATE
+			CHALLENGE
+		SET
+			STATUS = 'N'
+		WHERE 
+			CHALL_NO = ?
+	</entry>
+	
+	<entry key="selectCarouselList">
+		SELECT
+			ROWNUM,
+			T.*
+		FROM
+			(
+			SELECT
+				CHALL_NO,
+				CHALL_NAME,
+				CHALL_THUMBNAIL,
+				CHALL_INTRODUCTION,
+				CHALL_COUNT
+			FROM
+				CHALLENGE
+			WHERE
+				STATUS = 'Y'
+			AND CHALL_PUBLIC = 'Y'
+			ORDER BY
+				CHALL_COUNT DESC) T
+		WHERE
+			ROWNUM &lt;= 3
+	</entry>
+	
+	<entry key="selectRoutineList">
+		SELECT
+			ROWNUM,
+			T.*
+		FROM
+			(
+			SELECT
+				CHALL_NO,
+				CHALL_NAME,
+				CHALL_THUMBNAIL,
+				CHALL_INTRODUCTION,
+				TO_CHAR(CHALL_START, 'YYYY.MM.DD') CHALL_START,
+				TO_CHAR(CHALL_END, 'YYYY.MM.DD') CHALL_END,
+				(CHALL_END - CHALL_START) as CHALL_DAYCOUNT,
+				CHALL_FREQUENCY,
+				CHALL_COUNT,
+				CHALL_PARTICIPANT_NOW 
+			FROM
+				CHALLENGE
+			WHERE STATUS = 'Y'
+			AND CHALL_CATEGORY = ?
+			AND CHALL_PUBLIC = 'Y'
+			ORDER BY
+				CHALL_COUNT DESC) T
+		WHERE
+				ROWNUM &lt;= 4
+	</entry>
+	
+	<entry key="selectCountNotCert">
+		SELECT
+			COUNT(*)
+		FROM
+			JOIN_CHALL jc
+		LEFT JOIN CERT_CHALL cc ON
+			jc.CHALL_NO = cc.CHALL_NO
+		INNER JOIN CHALLENGE c ON
+			jc.CHALL_NO = c.CHALL_NO
+		WHERE
+			jc.USER_NO = ?
+			AND cc.CERT_NO IS NULL
+			AND c.CHALL_START &lt; SYSDATE
+			AND c.CHALL_END > SYSDATE
+			AND c.STATUS = 'Y'
+	</entry>
+	
+	
+	<entry key="selectNotCertList">
+		SELECT
+			c.CHALL_NAME
+		FROM
+			JOIN_CHALL jc
+		LEFT JOIN CERT_CHALL cc ON
+			jc.CHALL_NO = cc.CHALL_NO
+		INNER JOIN CHALLENGE c ON
+			jc.CHALL_NO = c.CHALL_NO
+		WHERE
+			jc.USER_NO = ?
+			AND cc.CERT_NO IS NULL
+			AND c.CHALL_START &lt; SYSDATE
+			AND c.CHALL_END > SYSDATE
+			AND c.STATUS = 'Y'
+	</entry>
+	
+</properties>
