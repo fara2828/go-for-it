@@ -48,14 +48,14 @@
 
 ---
 
-<img src="https://github.com/fara2828/go-for-it/assets/121650362/7cd384d5-daf3-4f6b-b349-c88f1be9e7b7"  width="60%" height="60%">
+<img src="https://github.com/fara2828/go-for-it/assets/121650362/97831728-6a2f-40a9-b8f8-736b3481d956"  width="60%" height="60%">
 
 
 # ✔ERD Diagram
 
 ---
 
-<img src="https://github.com/fara2828/go-for-it/assets/121650362/f0a599bb-ed8b-4c15-94e9-f82123d88003"  width="60%" height="60%">
+<img src="https://github.com/fara2828/go-for-it/assets/121650362/0500a3bf-15e1-45d5-8609-db455b1a9470"  width="60%" height="60%">
 ---
 
 # 전체기능
